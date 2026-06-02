@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hudson Valley Disc Golf Passport Interactive Map</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  html, body { height: 100%; margin: 0; font-family: Arial, Helvetica, sans-serif; }
+  #map { height: 100%; width: 100%; }
+  .title-card {
+    position: absolute; top: 16px; left: 16px; z-index: 1000;
+    background: rgba(255,255,255,0.94); border-radius: 14px; padding: 14px 16px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.25); max-width: 330px;
+  }
+  .title-card h1 { font-size: 22px; margin: 0 0 4px 0; line-height: 1.05; }
+  .title-card p { margin: 4px 0; font-size: 13px; color: #333; }
+  .legend {
+    position: absolute; bottom: 22px; left: 16px; z-index: 1000;
+    background: rgba(255,255,255,0.94); border-radius: 12px; padding: 12px 14px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.25); line-height: 1.35; font-size: 13px;
+  }
+  .legend-title { font-weight: 700; margin-bottom: 6px; }
+  .swatch { display:inline-block; width: 13px; height:13px; border-radius:50%; margin-right:6px; vertical-align:-2px; border: 1px solid #111; }
+  .sidebar {
+    position: absolute; top: 16px; right: 16px; z-index: 1000;
+    width: 320px; max-height: calc(100% - 32px); overflow: auto;
+    background: rgba(255,255,255,0.95); border-radius: 14px; padding: 12px 14px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.25); font-size: 13px;
+  }
+  .sidebar h2 { margin: 0 0 8px 0; font-size: 18px; }
+  .region-block { margin: 10px 0; border-top: 1px solid #ddd; padding-top: 8px; }
+  .region-head { font-weight: 700; font-size: 15px; }
+  .loc { margin: 3px 0; cursor: pointer; }
+  .loc:hover { text-decoration: underline; }
+  .marker-pin {
+    width: 28px; height: 28px; border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg); border: 2px solid #111;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  }
+  .marker-pin span {
+    display: block; transform: rotate(45deg); text-align: center; line-height: 26px; font-size: 15px;
+  }
+  .popup-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .small { color:#555; font-size: 12px; }
+  .filter-btn {
+    display:inline-block; margin: 3px 3px 0 0; padding: 4px 7px; border-radius: 999px;
+    border: 1px solid #999; background:#fff; cursor:pointer; font-size:12px;
+  }
+  .filter-btn:hover { background:#f0f0f0; }
+
+  .bonus-card {
+    position: absolute; bottom: 22px; right: 16px; z-index: 1000;
+    width: 320px; max-height: calc(100% - 32px); overflow: auto;
+    background: rgba(255,255,255,0.95); border-radius: 14px; padding: 12px 14px;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.25); font-size: 13px;
+  }
+  .bonus-card h2 { margin: 0 0 8px 0; font-size: 18px; }
+  .bonus-row { display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px solid #eee; }
+  .bonus-row:last-child { border-bottom:none; }
+  .bonus-points { font-weight:700; white-space:nowrap; }
+  .bonus-note { color:#555; font-size:12px; margin-top:7px; line-height:1.3; }
+
+  @media (max-width: 800px) {
+    .sidebar { display:none; }
+    .bonus-card { display:none; }
+    .title-card { max-width: 260px; }
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="title-card">
+  <h1>Hudson Valley Disc Golf Passport</h1>
+  <p>Interactive course + store map using actual KML coordinates.</p>
+  <p><b>Scoring:</b> Course = 1 point once/year · Store = 2 points once/year · Volunteer = 5 points, max 20.</p><p><b>Bonuses:</b> Complete regions, visit all stores, hit the volunteer cap, and finish the full Grand Slam.</p>
+  <div>
+    <button class="filter-btn" onclick="showAll()">Show all</button>
+    <button class="filter-btn" onclick="fitRegion('North')">North</button>
+    <button class="filter-btn" onclick="fitRegion('Central')">Central</button>
+    <button class="filter-btn" onclick="fitRegion('West')">West</button>
+    <button class="filter-btn" onclick="fitRegion('South')">South</button>
+  </div>
+</div>
+
+<div class="sidebar">
+  <h2>Passport Locations</h2>
+  <div id="sidebar-list"></div>
+</div>
+
+<div class="bonus-card">
+  <h2>Bonus Points</h2>
+  <div class="bonus-row"><span>Complete North Region</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-row"><span>Complete Central Region</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-row"><span>Complete West Region</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-row"><span>Complete South Region</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-row"><span>Grand Slam: complete all 4 regions</span><span class="bonus-points">+25</span></div>
+  <div class="bonus-row"><span>Visit all participating stores</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-row"><span>Reach volunteer cap</span><span class="bonus-points">+10</span></div>
+  <div class="bonus-note">
+    Base points: courses count once per year, stores count once per year, and volunteer workdays are 5 points each with a 20-point cap.
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-title">Regions</div>
+  <div><span class="swatch" style="background:#1976D2"></span>North</div>
+  <div><span class="swatch" style="background:#F57C00"></span>Central</div>
+  <div><span class="swatch" style="background:#388E3C"></span>West</div>
+  <div><span class="swatch" style="background:#D32F2F"></span>South</div>
+  <hr>
+  <div>🥏 Course marker</div>
+  <div>🏪 Store marker</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const data = {"type": "FeatureCollection", "features": [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.868894, 43.432323]}, "properties": {"name": "1000 Acres Disc Golf", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.4321022, 43.3485567]}, "properties": {"name": "Albatros Creek at Hartford Greens", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6624396, 43.3218929]}, "properties": {"name": "Crandall Park Disc Golf Course", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6214531, 43.3855375]}, "properties": {"name": "Jenkinsville DGC", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6282031, 43.2721625]}, "properties": {"name": "Moreau Rec DGC", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.816914, 43.4760764]}, "properties": {"name": "The Legend", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.7013092, 43.3909187]}, "properties": {"name": "Wild West Ranch", "region": "North", "type": "Course", "color": "#1976D2", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6365465, 43.2952392]}, "properties": {"name": "Common Roots Store", "region": "North", "type": "Store", "color": "#1976D2", "icon": "\ud83c\udfea"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.9098094, 42.8019309]}, "properties": {"name": "Central Park Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.5018422, 43.0727928]}, "properties": {"name": "Christ the King DGC", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.8065684, 42.6052338]}, "properties": {"name": "Colonial Acres Park Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.0363771, 43.0959664]}, "properties": {"name": "Hyzer Creek Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6824948, 42.7246397]}, "properties": {"name": "Prospect Park Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.8080648, 43.046648]}, "properties": {"name": "Saratoga Spa Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.8244214, 42.9638939]}, "properties": {"name": "Shenantaha Creek Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.5644347, 42.3845523]}, "properties": {"name": "Stonykill Disc Golf Course", "region": "Central", "type": "Course", "color": "#F57C00", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.6941688, 42.7297537]}, "properties": {"name": "New York Disc Golf Supply", "region": "Central", "type": "Store", "color": "#F57C00", "icon": "\ud83c\udfea"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.3774413, 42.8193983]}, "properties": {"name": "Burbine Memorial Forest Disc Golf Course", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.2062877, 42.9555732]}, "properties": {"name": "Dove Creek Disc Golf Course at Sassafras Hollow", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.9375971, 42.8878352]}, "properties": {"name": "Indian Meadows Park", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.0186554, 42.6581189]}, "properties": {"name": "John Boyd Thacher State Park: Disc Golf Course", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.4635222, 42.4345905]}, "properties": {"name": "Mine Kill State Park", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.1746074, 42.7421288]}, "properties": {"name": "Shafer Park DCG", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.9288537, 42.6395878]}, "properties": {"name": "Stephen P Wallace Park DGC", "region": "West", "type": "Course", "color": "#388E3C", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.36151, 43.0204224]}, "properties": {"name": "ADK Discs", "region": "West", "type": "Store", "color": "#388E3C", "icon": "\ud83c\udfea"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.9657503, 41.4884691]}, "properties": {"name": "Beacon Glades", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.8166035, 41.2838704]}, "properties": {"name": "FDR State Park Disc Golf Course", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.1565856, 41.6792907]}, "properties": {"name": "Gunks Disc Golf", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.7231612, 41.193589]}, "properties": {"name": "Leonard Park", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.393554, 41.2952676]}, "properties": {"name": "Oasis", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.6905123, 41.3700504]}, "properties": {"name": "Riverside Park Disc Golf Course", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-74.388173, 41.2967323]}, "properties": {"name": "Warwick Town Park Disc Golf Course", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}, {"type": "Feature", "geometry": {"type": "Point", "coordinates": [-73.7273972, 41.9536796]}, "properties": {"name": "Wilcox Memorial Park", "region": "South", "type": "Course", "color": "#D32F2F", "icon": "\ud83e\udd4f"}}]};
+const sidebarGroups = {"North": [{"Name": "1000 Acres Disc Golf", "Type": "Course"}, {"Name": "Albatros Creek at Hartford Greens", "Type": "Course"}, {"Name": "Crandall Park Disc Golf Course", "Type": "Course"}, {"Name": "Jenkinsville DGC", "Type": "Course"}, {"Name": "Moreau Rec DGC", "Type": "Course"}, {"Name": "The Legend", "Type": "Course"}, {"Name": "Wild West Ranch", "Type": "Course"}, {"Name": "Common Roots Store", "Type": "Store"}], "Central": [{"Name": "Central Park Disc Golf Course", "Type": "Course"}, {"Name": "Christ the King DGC", "Type": "Course"}, {"Name": "Colonial Acres Park Disc Golf Course", "Type": "Course"}, {"Name": "Hyzer Creek Disc Golf Course", "Type": "Course"}, {"Name": "Prospect Park Disc Golf Course", "Type": "Course"}, {"Name": "Saratoga Spa Disc Golf Course", "Type": "Course"}, {"Name": "Shenantaha Creek Disc Golf Course", "Type": "Course"}, {"Name": "Stonykill Disc Golf Course", "Type": "Course"}, {"Name": "New York Disc Golf Supply", "Type": "Store"}], "West": [{"Name": "Burbine Memorial Forest Disc Golf Course", "Type": "Course"}, {"Name": "Dove Creek Disc Golf Course at Sassafras Hollow", "Type": "Course"}, {"Name": "Indian Meadows Park", "Type": "Course"}, {"Name": "John Boyd Thacher State Park: Disc Golf Course", "Type": "Course"}, {"Name": "Mine Kill State Park", "Type": "Course"}, {"Name": "Shafer Park DCG", "Type": "Course"}, {"Name": "Stephen P Wallace Park DGC", "Type": "Course"}, {"Name": "ADK Discs", "Type": "Store"}], "South": [{"Name": "Beacon Glades", "Type": "Course"}, {"Name": "FDR State Park Disc Golf Course", "Type": "Course"}, {"Name": "Gunks Disc Golf", "Type": "Course"}, {"Name": "Leonard Park", "Type": "Course"}, {"Name": "Oasis", "Type": "Course"}, {"Name": "Riverside Park Disc Golf Course", "Type": "Course"}, {"Name": "Warwick Town Park Disc Golf Course", "Type": "Course"}, {"Name": "Wilcox Memorial Park", "Type": "Course"}]};
+const colors = {"North": "#1976D2", "Central": "#F57C00", "West": "#388E3C", "South": "#D32F2F", "Unassigned": "#616161"};
+const map = L.map('map').setView([42.608083, -73.925038], 8);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+const layers = {};
+const markersByName = {};
+
+function makeIcon(feature) {
+  const color = feature.properties.color;
+  const icon = feature.properties.icon;
+  return L.divIcon({
+    className: '',
+    html: `<div class="marker-pin" style="background:${color}"><span>${icon}</span></div>`,
+    iconSize: [30, 42],
+    iconAnchor: [15, 38],
+    popupAnchor: [0, -35]
+  });
+}
+
+data.features.forEach(feature => {
+  const region = feature.properties.region;
+  if (!layers[region]) layers[region] = L.layerGroup().addTo(map);
+  const [lon, lat] = feature.geometry.coordinates;
+  const marker = L.marker([lat, lon], {icon: makeIcon(feature)});
+  marker.bindPopup(`
+    <div class="popup-title">${feature.properties.name}</div>
+    <div><b>Region:</b> ${feature.properties.region}</div>
+    <div><b>Type:</b> ${feature.properties.type}</div>
+    <div class="small">${lat.toFixed(6)}, ${lon.toFixed(6)}</div>
+  `);
+  marker.addTo(layers[region]);
+  markersByName[feature.properties.name] = marker;
+});
+
+const overlays = {};
+Object.keys(layers).forEach(region => overlays[region] = layers[region]);
+L.control.layers(null, overlays, {collapsed: false}).addTo(map);
+
+const allGroup = L.featureGroup();
+Object.values(layers).forEach(layer => layer.eachLayer(m => allGroup.addLayer(m)));
+map.fitBounds(allGroup.getBounds().pad(0.1));
+
+function showAll() {
+  map.fitBounds(allGroup.getBounds().pad(0.1));
+}
+
+function fitRegion(region) {
+  if (!layers[region]) return;
+  const group = L.featureGroup();
+  layers[region].eachLayer(m => group.addLayer(m));
+  map.fitBounds(group.getBounds().pad(0.25));
+}
+
+function zoomToName(name) {
+  const marker = markersByName[name];
+  if (marker) {
+    map.setView(marker.getLatLng(), 13);
+    marker.openPopup();
+  }
+}
+
+const side = document.getElementById("sidebar-list");
+Object.keys(sidebarGroups).forEach(region => {
+  const block = document.createElement("div");
+  block.className = "region-block";
+  const courses = sidebarGroups[region].filter(x => x.Type === "Course").length;
+  const stores = sidebarGroups[region].filter(x => x.Type === "Store").length;
+  block.innerHTML = `<div class="region-head" style="color:${colors[region] || '#333'}">${region} <span class="small">(${courses} courses, ${stores} stores)</span></div>`;
+  sidebarGroups[region].forEach(item => {
+    const div = document.createElement("div");
+    div.className = "loc";
+    div.innerHTML = `${item.Type === "Store" ? "🏪" : "🥏"} ${item.Name}`;
+    div.onclick = () => zoomToName(item.Name);
+    block.appendChild(div);
+  });
+  side.appendChild(block);
+});
+</script>
+</body>
+</html>
