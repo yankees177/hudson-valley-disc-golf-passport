@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Passport Courses</name>
+    <description/>
+    <Style id="icon-1899-0288D1-nodesc-normal">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1899-0288D1-nodesc-highlight">
+      <IconStyle>
+        <color>ffd18802</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+        <hotSpot x="32" xunits="pixels" y="64" yunits="insetPixels"/>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1899-0288D1-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1899-0288D1-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1899-0288D1-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>North</name>
+      <Placemark>
+        <name>The Legend</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.816914,43.4760764,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>1000 Acres Disc Golf</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.868894,43.432323,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Albatros Creek at Hartford Greens</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.4321022,43.3485567,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Moreau Rec DGC</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6282031,43.2721625,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Jenkinsville DGC</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6214531,43.3855375,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Wild West Ranch</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.7013092,43.3909187,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Crandall Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6624396,43.3218929,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Common Roots Store</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6365465,43.2952392,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Central</name>
+      <Placemark>
+        <name>Christ the King DGC</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.5018422,43.0727928,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Hyzer Creek Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.0363771,43.0959664,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Saratoga Spa Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.8080648,43.046648,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Shenantaha Creek Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.8244214,42.9638939,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Central Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.9098094,42.8019309,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Prospect Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6824948,42.7246397,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Colonial Acres Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.8065684,42.6052338,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Stonykill Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.5644347,42.3845523,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>New York Disc Golf Supply</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.6941688,42.7297537,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>West</name>
+      <Placemark>
+        <name>John Boyd Thacher State Park: Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.0186554,42.6581189,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Stephen P Wallace Park DGC</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.9288537,42.6395878,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Dove Creek Disc Golf Course at Sassafras Hollow</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.2062877,42.9555732,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Burbine Memorial Forest Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.3774413,42.8193983,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Mine Kill State Park</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.4635222,42.4345905,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Indian Meadows Park</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.9375971,42.8878352,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Shafer Park DCG</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.1746074,42.7421288,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Joralemon Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.8675039,42.4734196,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>ADK Discs</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.36151,43.0204224,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>South</name>
+      <Placemark>
+        <name>Wilcox Memorial Park</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.7273972,41.9536796,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Gunks Disc Golf</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.1565856,41.6792907,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Beacon Glades</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.9657503,41.4884691,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>FDR State Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.8166035,41.2838704,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Warwick Town Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.388173,41.2967323,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Oasis</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.393554,41.2952676,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Leonard Park</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -73.7231612,41.193589,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Riverside Park Disc Golf Course</name>
+        <styleUrl>#icon-1899-0288D1-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -74.6905123,41.3700504,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+  </Document>
+</kml>
