@@ -1,0 +1,35 @@
+number,name,region,type,points,lat,lon
+1.0,The Legend,North,Course,1,43.4760764,-73.816914
+2.0,1000 Acres,North,Course,1,43.432323,-73.868894
+3.0,Albatross Creek,North,Course,1,43.3485567,-73.4321022
+4.0,Moreau Rec,North,Course,1,43.2721625,-73.6282031
+5.0,Jenkinsville,North,Course,1,43.3855375,-73.6214531
+6.0,Wild West Ranch,North,Course,1,43.3909187,-73.7013092
+7.0,Crandall Park,North,Course,1,43.3218929,-73.6624396
+,Common Roots Brewing,North,Store,2,43.2952392,-73.6365465
+8.0,CTK DGC,Central,Course,1,43.0727928,-73.5018422
+9.0,Hyzer Creek,Central,Course,1,43.0959664,-74.0363771
+10.0,SPAC,Central,Course,1,43.046648,-73.8080648
+11.0,Shenantaha,Central,Course,1,42.9638939,-73.8244214
+12.0,Central Park,Central,Course,1,42.8019309,-73.9098094
+13.0,Prospect Park,Central,Course,1,42.7246397,-73.6824948
+14.0,Colonial Acres,Central,Course,1,42.6052338,-73.8065684
+15.0,Stonykill DGC,Central,Course,1,42.3845523,-73.5644347
+,NYS Disc Golf Supply,Central,Store,2,42.7297537,-73.6941688
+16.0,Thacher Park,West,Course,1,42.6581189,-74.0186554
+17.0,Stephen P. Wallace,West,Course,1,42.6395878,-73.9288537
+18.0,Dove Creek,West,Course,1,42.9555732,-74.2062877
+19.0,Burbine,West,Course,1,42.8193983,-74.3774413
+20.0,Mine Kill,West,Course,1,42.4345905,-74.4635222
+21.0,Indian Meadows,West,Course,1,42.8878352,-73.9375971
+22.0,Shafer Park,West,Course,1,42.7421288,-74.1746074
+23.0,Joralemon Park,West,Course,1,42.4734196,-73.8675039
+,ADK Discs,West,Store,2,43.0204224,-74.36151
+24.0,Wilcox Memorial,South,Course,1,41.9536796,-73.7273972
+25.0,Gunks DGC,South,Course,1,41.6792907,-74.1565856
+26.0,Beacon Glades,South,Course,1,41.4884691,-73.9657503
+27.0,FDR State Park,South,Course,1,41.2838704,-73.8166035
+28.0,Warwick DGC,South,Course,1,41.2967323,-74.388173
+29.0,Oasis,South,Course,1,41.2952676,-74.393554
+30.0,Leonard Park,South,Course,1,41.193589,-73.7231612
+31.0,Riverside Park,South,Course,1,41.3700504,-74.6905123
